@@ -42,6 +42,7 @@ h1,h2{font-family:"Cormorant Garamond",serif;font-weight:600;letter-spacing:.01e
 .gallery img{flex:none;width:82%;aspect-ratio:4/3;object-fit:cover;border-radius:14px;scroll-snap-align:start}
 .video{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;margin-top:8px}
 .video iframe,.video video{position:absolute;inset:0;width:100%;height:100%;border:0}
+.solo .back,.solo #home{display:none!important}
 .view{display:none}
 .view.on{display:block}
 .back{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--accent);font:600 14px Inter;padding:12px 0;cursor:pointer}
@@ -393,9 +394,12 @@ async function send(data) {
 
 function toast(m) { const t = $("#toast"); t.textContent = m; t.classList.add("on"); setTimeout(() => t.classList.remove("on"), 2600); }
 
+const SOLO = new URLSearchParams(location.search).has("arrivo");
+if (SOLO) document.body.classList.add("solo");
 function go(id) {
+  if (SOLO) id = "arrivo";
   $$(".view").forEach(v => v.classList.toggle("on", v.id === id));
-  if (location.hash.slice(1) !== id) history.pushState(null, "", id === "home" ? location.pathname : "#" + id);
+  if (!SOLO && location.hash.slice(1) !== id) history.pushState(null, "", id === "home" ? location.pathname : "#" + id);
   window.scrollTo(0, 0);
 }
 
@@ -438,7 +442,7 @@ $("#sendOut").onclick = async () => {
 };
 
 render();
-if (location.hash) go(location.hash.slice(1));
+if (SOLO) go("arrivo"); else if (location.hash) go(location.hash.slice(1));
 </script>
 </body>
 </html>
