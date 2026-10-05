@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f4ee">
+<title>Villa Bianca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f4ee; --card:#ffffff; --ink:#1f2a2e; --muted:#6b7478; --line:#e6e0d4;
+  --accent:#2f5d62; --accent-soft:#e3ecea; --gold:#b08d57; --ok:#2e7d4f; --radius:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg)}
+body{font-family:Inter,system-ui,sans-serif;color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom)}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px 48px}
+h1,h2{font-family:"Cormorant Garamond",serif;font-weight:600;letter-spacing:.01em}
+.top{display:flex;justify-content:space-between;align-items:center;padding:16px 0 4px}
+.brand{font-family:"Cormorant Garamond",serif;font-size:20px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--card)}
+.lang button{border:0;background:none;padding:6px 12px;font:600 12px Inter;color:var(--muted);cursor:pointer}
+.lang button.on{background:var(--accent);color:#fff}
+.hero{margin:12px 0 20px;padding:28px 22px;border-radius:var(--radius);background:linear-gradient(160deg,#ffffff 0%,#efe9dd 100%);border:1px solid var(--line)}
+.hero h1{font-size:34px;line-height:1.1;margin-bottom:6px}
+.hero p{color:var(--muted)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:13px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 16px;text-align:left;cursor:pointer;font:inherit;color:inherit;display:flex;flex-direction:column;gap:8px;min-height:112px;transition:transform .15s}
+.tile:active{transform:scale(.98)}
+.tile .ic{font-size:26px}
+.tile b{font-size:15px}
+.tile span{font-size:12.5px;color:var(--muted)}
+.tile.wide{grid-column:1/-1;flex-direction:row;align-items:center;min-height:auto;background:var(--accent);color:#fff;border-color:var(--accent)}
+.tile.wide span{color:#d7e5e3}
+.hero.photo{background-size:cover;background-position:center;color:#fff;border:0;min-height:360px;text-shadow:0 1px 8px rgba(0,0,0,.45);display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden}
+.hero.photo::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 25%,rgba(0,0,0,.72) 85%)}
+.hero.photo>*{position:relative}.hero.photo p{color:#eee}.hero.photo .chip{background:rgba(255,255,255,.9);color:var(--ink)}
+.gallery{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin-bottom:12px;scrollbar-width:none}
+.gallery img{flex:none;width:82%;aspect-ratio:4/3;object-fit:cover;border-radius:14px;scroll-snap-align:start}
+.video{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;margin-top:8px}
+.video iframe,.video video{position:absolute;inset:0;width:100%;height:100%;border:0}
+.view{display:none}
+.view.on{display:block}
+.back{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--accent);font:600 14px Inter;padding:12px 0;cursor:pointer}
+.view h2{font-size:30px;margin:4px 0 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:12px}
+.card h3{font-size:15px;margin-bottom:6px;display:flex;gap:8px;align-items:center}
+.card p,.card li{font-size:14.5px;color:#39454a}
+.card ol,.card ul{padding-left:20px;display:grid;gap:6px}
+.step{display:flex;gap:12px}
+.num{flex:none;width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:600;font-size:13px}
+.btn{display:flex;justify-content:center;align-items:center;gap:8px;width:100%;border:0;border-radius:14px;padding:14px;font:600 15px Inter;cursor:pointer;text-decoration:none;background:var(--accent);color:#fff;margin-top:12px}
+.btn.ghost{background:var(--accent-soft);color:var(--accent)}
+.btn:disabled{opacity:.45;cursor:default}
+.wifi{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;background:var(--bg);border-radius:12px;margin-top:8px}
+.wifi small{color:var(--muted);display:block;font-size:12px}
+.wifi code{font:600 16px ui-monospace,Menlo,monospace}
+.copy{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:7px 12px;font:600 13px Inter;color:var(--accent);cursor:pointer}
+.place{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--line)}
+.place:first-of-type{border-top:0}
+.place b{font-size:14.5px;display:block}
+.place small{color:var(--muted);font-size:13px}
+.place a{flex:none;font:600 13px Inter;color:var(--accent);text-decoration:none;border:1px solid var(--line);border-radius:10px;padding:7px 10px}
+.tabs{display:flex;gap:8px;overflow-x:auto;margin-bottom:12px;scrollbar-width:none}
+.tabs button{flex:none;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 14px;font:500 13.5px Inter;cursor:pointer;color:var(--ink)}
+.tabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.prod{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.prod:first-child{border-top:0}
+.prod .em{font-size:28px;width:44px;height:44px;display:grid;place-items:center;background:var(--bg);border-radius:12px;flex:none}
+.prod .info{flex:1;min-width:0}
+.prod b{font-size:14.5px;display:block}
+.prod small{color:var(--muted);font-size:12.5px;display:block}
+.prod .pr{font-weight:600;color:var(--gold);font-size:14px}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--card);font:600 18px Inter;color:var(--accent);cursor:pointer}
+.qty span{min-width:16px;text-align:center;font-weight:600}
+.cartbar{position:sticky;bottom:12px;margin-top:12px;background:var(--ink);color:#fff;border-radius:16px;padding:14px 16px;display:none;justify-content:space-between;align-items:center}
+.cartbar.on{display:flex}
+.cartbar button{background:#fff;color:var(--ink);border:0;border-radius:10px;padding:9px 14px;font:600 14px Inter;cursor:pointer}
+label.f{display:block;font-size:13px;font-weight:600;margin:12px 0 6px}
+input[type=text],input[type=tel],textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;font:15px Inter;background:var(--bg);color:var(--ink)}
+textarea{min-height:70px;resize:vertical}
+.check{display:flex;gap:12px;align-items:flex-start;padding:10px 0;font-size:14.5px;cursor:pointer}
+.check input{width:22px;height:22px;accent-color:var(--accent);flex:none;margin-top:1px}
+.note{font-size:12.5px;color:var(--muted);margin-top:8px}
+.done{text-align:center;padding:28px 18px}
+.done .big{font-size:48px}
+.done h3{justify-content:center;font-family:"Cormorant Garamond",serif;font-size:26px;margin:8px 0}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;transition:transform .25s,opacity .25s;opacity:0;z-index:9}
+.toast.on{transform:translateX(-50%) translateY(0);opacity:1}
+footer{text-align:center;color:var(--muted);font-size:12.5px;margin-top:28px}
+footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">Villa Bianca</div>
+    <div class="lang"><button data-l="it">IT</button><button data-l="en">EN</button></div>
+  </div>
+
+  <!-- HOME -->
+  <section class="view on" id="home">
+    <div class="hero" id="hero">
+      <h1 data-t="welcome"></h1>
+      <p data-t="welcomeSub"></p>
+      <div class="chips">
+        <span class="chip" id="chipIn"></span>
+        <span class="chip" id="chipOut"></span>
+      </div>
+    </div>
+    <div class="grid">
+      <button class="tile" data-go="arrivo"><span class="ic">🧭</span><b data-t="tArrive"></b><span data-t="tArriveSub"></span></button>
+      <button class="tile" data-go="wifi"><span class="ic">📶</span><b>Wi-Fi</b><span data-t="tWifiSub"></span></button>
+      <button class="tile" data-go="casa"><span class="ic">🏡</span><b data-t="tHouse"></b><span data-t="tHouseSub"></span></button>
+      <button class="tile" data-go="dintorni"><span class="ic">🛒</span><b data-t="tAround"></b><span data-t="tAroundSub"></span></button>
+      <button class="tile wide" data-go="shop"><span class="ic">🍷</span><div><b data-t="tShop"></b><br><span data-t="tShopSub"></span></div></button>
+      <button class="tile wide" data-go="checkout" style="background:var(--card);color:var(--ink);border-color:var(--line)"><span class="ic">🔑</span><div><b>Check-out</b><br><span style="color:var(--muted)" data-t="tOutSub"></span></div></button>
+    </div>
+    <footer>
+      <span data-t="help"></span><br>
+      <a id="waLink" href="#">WhatsApp</a> · <a id="telLink" href="#" data-t="call"></a>
+    </footer>
+  </section>
+
+  <!-- ARRIVO -->
+  <section class="view" id="arrivo">
+    <button class="back" data-go="home">← <span data-t="back"></span></button>
+    <h2 data-t="tArrive"></h2>
+    <div class="card" id="videoCard"><h3>🎬 <span data-t="videoTitle"></span></h3><div id="videoBox"></div></div>
+    <div id="arrivoSteps"></div>
+    <a class="btn" id="mapsBtn" target="_blank" rel="noopener">📍 <span data-t="openMaps"></span></a>
+  </section>
+
+  <!-- WIFI -->
+  <section class="view" id="wifi">
+    <button class="back" data-go="home">← <span data-t="back"></span></button>
+    <h2>Wi-Fi</h2>
+    <div class="card">
+      <h3>📶 <span data-t="wifiConnect"></span></h3>
+      <div class="wifi"><div><small data-t="network"></small><code id="ssid"></code></div><button class="copy" data-copy="ssid" data-t="copy"></button></div>
+      <div class="wifi"><div><small>Password</small><code id="wpass"></code></div><button class="copy" data-copy="wpass" data-t="copy"></button></div>
+      <p class="note" data-t="wifiNote"></p>
+    </div>
+  </section>
+
+  <!-- CASA -->
+  <section class="view" id="casa">
+    <button class="back" data-go="home">← <span data-t="back"></span></button>
+    <h2 data-t="tHouse"></h2>
+    <div class="gallery" id="gallery"></div>
+    <div id="casaList"></div>
+  </section>
+
+  <!-- DINTORNI -->
+  <section class="view" id="dintorni">
+    <button class="back" data-go="home">← <span data-t="back"></span></button>
+    <h2 data-t="tAround"></h2>
+    <div id="placesList"></div>
+  </section>
+
+  <!-- SHOP -->
+  <section class="view" id="shop">
+    <button class="back" data-go="home">← <span data-t="back"></span></button>
+    <h2 data-t="tShop"></h2>
+    <p class="note" style="margin:-6px 0 14px" data-t="shopIntro"></p>
+    <div class="tabs" id="shopTabs"></div>
+    <div class="card" id="prodList"></div>
+    <div class="card" id="orderForm" style="display:none">
+      <h3>🧾 <span data-t="yourOrder"></span></h3>
+      <ul id="orderSummary" style="list-style:none;padding:0"></ul>
+      <label class="f" data-t="yourName"></label>
+      <input type="text" id="oName" autocomplete="name">
+      <label class="f" data-t="notes"></label>
+      <textarea id="oNote" data-tp="notesPh"></textarea>
+      <p class="note" id="payNote"></p>
+      <button class="btn" id="sendOrder" data-t="sendOrder"></button>
+    </div>
+    <div class="cartbar" id="cartbar"><span id="cartTxt"></span><button id="cartGo" data-t="review"></button></div>
+  </section>
+
+  <!-- CHECK-OUT -->
+  <section class="view" id="checkout">
+    <button class="back" data-go="home">← <span data-t="back"></span></button>
+    <h2>Check-out</h2>
+    <div id="outForm">
+      <div class="card">
+        <h3>✅ <span data-t="beforeLeave"></span></h3>
+        <div id="outChecks"></div>
+      </div>
+      <div class="card">
+        <label class="f" style="margin-top:0" data-t="yourName"></label>
+        <input type="text" id="cName" autocomplete="name">
+        <label class="f" data-t="phoneOpt"></label>
+        <input type="tel" id="cPhone" autocomplete="tel" placeholder="+39 333 1234567">
+        <label class="check"><input type="checkbox" id="cConsent"><span data-t="consent"></span></label>
+        <button class="btn" id="sendOut" disabled data-t="didCheckout"></button>
+        <p class="note" data-t="outNote"></p>
+      </div>
+    </div>
+    <div class="card done" id="outDone" style="display:none">
+      <div class="big">👋</div>
+      <h3 data-t="thanks"></h3>
+      <p data-t="thanksSub"></p>
+      <a class="btn ghost" id="reviewBtn" target="_blank" rel="noopener">⭐ <span data-t="leaveReview"></span></a>
+    </div>
+  </section>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================================
+   CONFIGURAZIONE: modifica solo questa parte.
+   Testi tra [QUADRE] = da completare.
+   ===================================================================== */
+const CFG = {
+  // Webhook del flusso n8n "Villa Bianca - Ordini e Check-out" (URL di produzione)
+  webhook: "https://giuliog.app.n8n.cloud/webhook/villa-bianca",
+  googleReview: "[LINK RECENSIONE GOOGLE]",
+  whatsapp: "39XXXXXXXXXX",          // numero per WhatsApp, solo cifre con prefisso
+  phone: "+39 XXX XXX XXXX",
+  checkin: "15:00",
+  checkout: "10:00",
+  maps: "https://maps.google.com/?q=[INDIRIZZO VILLA BIANCA]",
+  // Video "come arrivare dal paese": link YouTube oppure file .mp4 messo nel repo (es. "arrivo.mp4")
+  video: "[LINK VIDEO]",
+  // Foto della casa: metti i file nel repo (es. "foto/1.jpg") e scrivi qui i nomi. La prima fa da copertina.
+  foto: ["foto/1-terrazza-lago.jpg", "foto/2-soggiorno.jpg", "foto/3-cancello.jpg"],
+  wifi: { ssid: "VillaBianca_WiFi", pass: "Piediluco2026" },  // provvisori, da cambiare
+  payment: {
+    it: "Paghi in contanti alla consegna o al check-out. Ti avvisiamo appena l'ordine è pronto.",
+    en: "Pay cash on delivery or at check-out. We'll let you know when your order is ready."
+  },
+
+  // Come arrivare (il codice della keybox NON va qui: lo mandi nel messaggio di check-in)
+  arrivo: [
+    { it: "Dal paese: segui il video qui sopra.",
+      en: "From the village: follow the video above.", soloVideo: true },
+    { it: "Parcheggio privato in loco, per 1-2 auto.",
+      en: "Free private parking on site, room for 1-2 cars." },
+    { it: "Chiavi: le trovi nella keybox davanti al cancello. Il codice è nel messaggio di check-in.",
+      en: "Keys: they are in the key box in front of the gate. The code is in your check-in message.",
+      img: "foto/3-cancello.jpg" },
+    { it: "Entra, accendi la luce [dove] e benvenuto a Villa Bianca!",
+      en: "Come in, the light switch is [where]. Welcome to Villa Bianca!" }
+  ],
+
+  // Info sulla casa
+  casa: [
+    { ic: "🔥", t: { it: "Riscaldamento e aria condizionata", en: "Heating and air conditioning" }, d: { it: "[come si usano]", en: "[how to use them]" } },
+    { ic: "♻️", t: { it: "Raccolta differenziata", en: "Recycling" }, d: { it: "[dove buttare e quali giorni]", en: "[where and which days]" } },
+    { ic: "🚭", t: { it: "Regole della casa", en: "House rules" }, d: { it: "Non si fuma in casa. Silenzio dalle 23 alle 8. [altro]", en: "No smoking indoors. Quiet hours 11pm to 8am. [other]" } }
+  ],
+
+  // Dintorni (puoi copiarli dal tuo Linktree)
+  posti: [
+    { n: "[Supermercato 1]", d: { it: "[distanza / orari]", en: "[distance / hours]" }, map: "https://maps.google.com/?q=[supermercato]" },
+    { n: "[Ristorante]", d: { it: "[descrizione]", en: "[description]" }, map: "https://maps.google.com/?q=[ristorante]" },
+    { n: "[Farmacia]", d: { it: "[distanza]", en: "[distance]" }, map: "https://maps.google.com/?q=[farmacia]" }
+  ],
+
+  // Prodotti in vendita: cat = categoria, p = prezzo in euro
+  prodotti: [
+    { id: "vino-rosso", cat: "vino", em: "🍷", n: { it: "[Vino rosso locale]", en: "[Local red wine]" }, d: { it: "Bottiglia 75 cl", en: "75 cl bottle" }, p: 18 },
+    { id: "vino-bianco", cat: "vino", em: "🥂", n: { it: "[Vino bianco locale]", en: "[Local white wine]" }, d: { it: "Bottiglia 75 cl", en: "75 cl bottle" }, p: 16 },
+    { id: "birra", cat: "birra", em: "🍺", n: { it: "[Birra artigianale]", en: "[Craft beer]" }, d: { it: "33 cl", en: "33 cl" }, p: 4 },
+    { id: "formaggi", cat: "cibo", em: "🧀", n: { it: "Tagliere di formaggi", en: "Cheese board" }, d: { it: "[formaggi locali]", en: "[local cheeses]" }, p: 15 },
+    { id: "colazione", cat: "cibo", em: "🥐", n: { it: "Kit colazione", en: "Breakfast kit" }, d: { it: "[cosa contiene]", en: "[what's inside]" }, p: 10 }
+  ],
+  categorie: { vino: { it: "Vino", en: "Wine" }, birra: { it: "Birra", en: "Beer" }, cibo: { it: "Cibo", en: "Food" } },
+
+  // Checklist del check-out
+  checklist: [
+    { it: "Ho spento luci e condizionatori", en: "Lights and AC are off" },
+    { it: "Ho chiuso finestre e porte", en: "Windows and doors are closed" },
+    { it: "Ho buttato i rifiuti", en: "I took out the trash" },
+    { it: "Ho rimesso le chiavi nella keybox", en: "I put the keys back in the key box" }
+  ]
+};
+
+/* ===================== TESTI FISSI ===================== */
+const T = {
+  it: {
+    welcome: "Benvenuti a Villa Bianca", welcomeSub: "Tutto quello che vi serve per il soggiorno, in un posto solo.",
+    tArrive: "Come arrivare", tArriveSub: "Strada, parcheggio, chiavi", tWifiSub: "Rete e password",
+    tHouse: "La casa", tHouseSub: "Regole e istruzioni", tAround: "Dintorni", tAroundSub: "Supermercati e consigli",
+    tShop: "Vino ed extra", tShopSub: "Vino, birra, formaggi e altro", tOutSub: "Quando partite, avvisateci qui",
+    help: "Serve aiuto? Scrivici quando vuoi.", call: "Chiama", back: "Indietro", openMaps: "Apri in Google Maps",
+    wifiConnect: "Connettiti alla rete", network: "Rete", copy: "Copia", copied: "Copiato!",
+    wifiNote: "Se la connessione non va, spegni e riaccendi il router [dove si trova].",
+    shopIntro: "Scegli cosa vuoi, invia l'ordine e te lo portiamo noi.", all: "Tutto",
+    yourOrder: "Il tuo ordine", yourName: "Il tuo nome", notes: "Note (facoltative)", notesPh: "Es. lo lasciate davanti alla porta",
+    sendOrder: "Invia ordine", review: "Vedi ordine", items: "articoli", orderSent: "Ordine inviato! Ti avvisiamo a breve.",
+    beforeLeave: "Prima di partire", phoneOpt: "Cellulare (facoltativo)",
+    consent: "Accetto di ricevere un SMS con la richiesta di una recensione.",
+    didCheckout: "Ho fatto il check-out", outNote: "Spunta la lista e premi il pulsante: ci arriva subito un avviso.",
+    thanks: "Grazie e buon viaggio!", thanksSub: "Speriamo di rivedervi presto. Se vi siete trovati bene, una recensione ci aiuta tantissimo.",
+    leaveReview: "Lascia una recensione su Google", videoTitle: "Video: dal paese a Villa Bianca", watchVideo: "Guarda il video", total: "Totale", err: "Errore di rete, riprova."
+  },
+  en: {
+    welcome: "Welcome to Villa Bianca", welcomeSub: "Everything you need for your stay, in one place.",
+    tArrive: "Getting here", tArriveSub: "Road, parking, keys", tWifiSub: "Network and password",
+    tHouse: "The house", tHouseSub: "Rules and how-tos", tAround: "Nearby", tAroundSub: "Shops and tips",
+    tShop: "Wine and extras", tShopSub: "Wine, beer, cheese and more", tOutSub: "Let us know here when you leave",
+    help: "Need help? Message us anytime.", call: "Call", back: "Back", openMaps: "Open in Google Maps",
+    wifiConnect: "Connect to the network", network: "Network", copy: "Copy", copied: "Copied!",
+    wifiNote: "If the connection drops, restart the router [where it is].",
+    shopIntro: "Pick what you like, send the order and we'll bring it to you.", all: "All",
+    yourOrder: "Your order", yourName: "Your name", notes: "Notes (optional)", notesPh: "E.g. leave it at the door",
+    sendOrder: "Send order", review: "View order", items: "items", orderSent: "Order sent! We'll get back to you shortly.",
+    beforeLeave: "Before you leave", phoneOpt: "Mobile number (optional)",
+    consent: "I agree to receive one SMS asking for a review.",
+    didCheckout: "I've checked out", outNote: "Tick the list and press the button: we get notified right away.",
+    thanks: "Thank you, safe travels!", thanksSub: "We hope to see you again. If you enjoyed your stay, a review helps us a lot.",
+    leaveReview: "Leave a Google review", videoTitle: "Video: from the village to Villa Bianca", watchVideo: "Watch the video", total: "Total", err: "Network error, please try again."
+  }
+};
+
+/* ===================== LOGICA ===================== */
+let L = (localStorage.getItem("vb-lang") || (navigator.language || "it")).slice(0, 2) === "it" ? "it" : "en";
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const tx = o => (o && typeof o === "object") ? (o[L] ?? o.it) : o;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const cart = {}; let cat = "all";
+
+function render() {
+  document.documentElement.lang = L;
+  $$(".lang button").forEach(b => b.classList.toggle("on", b.dataset.l === L));
+  $$("[data-t]").forEach(el => el.textContent = T[L][el.dataset.t]);
+  $$("[data-tp]").forEach(el => el.placeholder = T[L][el.dataset.tp]);
+  $("#chipIn").textContent = "Check-in " + CFG.checkin;
+  $("#chipOut").textContent = "Check-out " + CFG.checkout;
+  $("#waLink").href = "https://wa.me/" + CFG.whatsapp;
+  $("#telLink").href = "tel:" + CFG.phone.replace(/\s/g, "");
+  $("#mapsBtn").href = CFG.maps;
+  $("#reviewBtn").href = CFG.googleReview;
+  $("#ssid").textContent = CFG.wifi.ssid; $("#wpass").textContent = CFG.wifi.pass;
+  $("#payNote").textContent = tx(CFG.payment);
+  const yt = (CFG.video.match(/(?:youtu\.be\/|v=|shorts\/)([\w-]{11})/) || [])[1];
+  $("#videoCard").style.display = CFG.video.startsWith("[") ? "none" : "";
+  $("#videoBox").innerHTML = yt ? `<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/${yt}" allowfullscreen></iframe></div>`
+    : /\.(mp4|mov|webm)$/i.test(CFG.video) ? `<div class="video"><video src="${esc(CFG.video)}" controls playsinline preload="metadata"></video></div>`
+    : `<a class="btn" href="${esc(CFG.video)}" target="_blank" rel="noopener">▶ ${T[L].watchVideo}</a>`;
+  if (CFG.foto.length) { $("#hero").classList.add("photo"); $("#hero").style.backgroundImage = `url("${CFG.foto[0]}")`; }
+  $("#gallery").innerHTML = CFG.foto.map(u => `<img src="${esc(u)}" alt="" loading="lazy">`).join("");
+  $("#arrivoSteps").innerHTML = CFG.arrivo.filter(s => !s.soloVideo || !CFG.video.startsWith("[")).map((s, i) =>
+    `<div class="card step"><span class="num">${i + 1}</span><div><p>${esc(tx(s))}</p>${s.img ? `<img src="${esc(s.img)}" alt="" loading="lazy" style="width:100%;border-radius:12px;margin-top:10px;max-height:320px;object-fit:cover">` : ""}</div></div>`).join("");
+  $("#casaList").innerHTML = CFG.casa.map(c =>
+    `<div class="card"><h3>${c.ic} ${esc(tx(c.t))}</h3><p>${esc(tx(c.d))}</p></div>`).join("");
+  $("#placesList").innerHTML = `<div class="card">` + CFG.posti.map(p =>
+    `<div class="place"><div><b>${esc(p.n)}</b><small>${esc(tx(p.d))}</small></div><a href="${esc(p.map)}" target="_blank" rel="noopener">Maps</a></div>`).join("") + `</div>`;
+  $("#outChecks").innerHTML = CFG.checklist.map((c, i) =>
+    `<label class="check"><input type="checkbox" class="oc" data-i="${i}"><span>${esc(tx(c))}</span></label>`).join("");
+  $$(".oc").forEach(c => c.onchange = checkReady);
+  renderShop(); checkReady();
+}
+
+function renderShop() {
+  const cats = ["all", ...Object.keys(CFG.categorie)];
+  $("#shopTabs").innerHTML = cats.map(c =>
+    `<button class="${c === cat ? "on" : ""}" data-c="${c}">${c === "all" ? T[L].all : esc(tx(CFG.categorie[c]))}</button>`).join("");
+  $$("#shopTabs button").forEach(b => b.onclick = () => { cat = b.dataset.c; renderShop(); });
+  $("#prodList").innerHTML = CFG.prodotti.filter(p => cat === "all" || p.cat === cat).map(p => `
+    <div class="prod"><span class="em">${p.em}</span>
+      <div class="info"><b>${esc(tx(p.n))}</b><small>${esc(tx(p.d))}</small><span class="pr">€ ${p.p.toFixed(2)}</span></div>
+      <div class="qty"><button data-m="${p.id}">−</button><span>${cart[p.id] || 0}</span><button data-p="${p.id}">+</button></div>
+    </div>`).join("");
+  $$("[data-p]").forEach(b => b.onclick = () => { cart[b.dataset.p] = (cart[b.dataset.p] || 0) + 1; renderShop(); });
+  $$("[data-m]").forEach(b => b.onclick = () => { const k = b.dataset.m; if (cart[k]) cart[k]--; if (!cart[k]) delete cart[k]; renderShop(); });
+  const lines = orderLines(), n = lines.reduce((a, l) => a + l.q, 0), tot = lines.reduce((a, l) => a + l.q * l.p, 0);
+  $("#cartbar").classList.toggle("on", n > 0 && $("#orderForm").style.display === "none");
+  $("#cartTxt").textContent = `${n} ${T[L].items} · € ${tot.toFixed(2)}`;
+  $("#orderSummary").innerHTML = lines.map(l => `<li class="place"><span>${l.q} × ${esc(l.nl)}</span><b>€ ${(l.q * l.p).toFixed(2)}</b></li>`).join("")
+    + `<li class="place"><b>${T[L].total}</b><b>€ ${tot.toFixed(2)}</b></li>`;
+  if (!n) $("#orderForm").style.display = "none";
+}
+const orderLines = () => Object.entries(cart).map(([id, q]) => {
+  const p = CFG.prodotti.find(x => x.id === id); return { q, n: p.n.it, nl: tx(p.n), p: p.p };
+});
+
+function checkReady() {
+  const all = $$(".oc").every(c => c.checked);
+  $("#sendOut").disabled = !all || !$("#cName").value.trim();
+}
+
+async function send(data) {
+  // form-urlencoded = richiesta "semplice", nessun problema di CORS con n8n
+  await fetch(CFG.webhook, { method: "POST", mode: "no-cors", body: new URLSearchParams(data) });
+}
+
+function toast(m) { const t = $("#toast"); t.textContent = m; t.classList.add("on"); setTimeout(() => t.classList.remove("on"), 2600); }
+
+function go(id) {
+  $$(".view").forEach(v => v.classList.toggle("on", v.id === id));
+  if (location.hash.slice(1) !== id) history.pushState(null, "", id === "home" ? location.pathname : "#" + id);
+  window.scrollTo(0, 0);
+}
+
+$$("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
+window.onpopstate = () => go(location.hash.slice(1) || "home");
+$$(".lang button").forEach(b => b.onclick = () => { L = b.dataset.l; try { localStorage.setItem("vb-lang", L); } catch (e) {} render(); });
+$$("[data-copy]").forEach(b => b.onclick = async () => {
+  try { await navigator.clipboard.writeText($("#" + b.dataset.copy).textContent); toast(T[L].copied); } catch (e) {}
+});
+$("#cName").oninput = checkReady;
+$("#cartGo").onclick = () => { $("#orderForm").style.display = "block"; $("#cartbar").classList.remove("on"); $("#orderForm").scrollIntoView({ behavior: "smooth" }); };
+
+$("#sendOrder").onclick = async () => {
+  const lines = orderLines(); if (!lines.length) return;
+  const btn = $("#sendOrder"); btn.disabled = true;
+  try {
+    await send({
+      tipo: "ordine", casa: "Villa Bianca", lingua: L,
+      nome: $("#oName").value.trim(), note: $("#oNote").value.trim(),
+      ordine: lines.map(l => `${l.q} x ${l.n} (€ ${(l.q * l.p).toFixed(2)})`).join("\n"),
+      totale: lines.reduce((a, l) => a + l.q * l.p, 0).toFixed(2)
+    });
+    Object.keys(cart).forEach(k => delete cart[k]);
+    $("#orderForm").style.display = "none"; $("#oNote").value = "";
+    renderShop(); toast(T[L].orderSent);
+  } catch (e) { toast(T[L].err); }
+  btn.disabled = false;
+};
+
+$("#sendOut").onclick = async () => {
+  const btn = $("#sendOut"); btn.disabled = true;
+  try {
+    await send({
+      tipo: "checkout", casa: "Villa Bianca", lingua: L,
+      nome: $("#cName").value.trim(), telefono: $("#cPhone").value.trim(),
+      consenso_sms: $("#cConsent").checked ? "si" : "no"
+    });
+    $("#outForm").style.display = "none"; $("#outDone").style.display = "block";
+  } catch (e) { toast(T[L].err); btn.disabled = false; }
+};
+
+render();
+if (location.hash) go(location.hash.slice(1));
+</script>
+</body>
+</html>
